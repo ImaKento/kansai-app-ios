@@ -1,7 +1,10 @@
 {
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
-    "source.fixAll": true
-  }
+    "source.organizeImports": "explicit",
+    "source.fixAll": "explicit",
+    "source.removeUnusedImports": "explicit"
+  },
+  "typescript.preferences.organizeImportsIgnoreCase": false,
+  "typescript.preferences.includePackageJsonAutoImports": "auto",
+  "typescript.suggest.autoImports": true
 }
