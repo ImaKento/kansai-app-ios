@@ -1,20 +1,43 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+import {
+  SafeAreaView,
+  StatusBar,
+  StyleSheet,
+} from 'react-native';
+import Header from './src/components/header';
+import TabNavigation from './src/components/tab-navigation';
+import RouteSearchScreen from './src/screens/route-search/route-search.view';
+import RouteResultsScreen from './src/screens/route-results/route-results.view';
+import { useAppViewModel } from './AppViewModel';
 
-export default function App() {
+const App = () => {
+  const { activeTab, setActiveTab } = useAppViewModel();
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <SafeAreaView style={styles.container}>
+      <StatusBar
+        barStyle="dark-content" 
+        backgroundColor="#fff" 
+        translucent={false}
+      />
+      
+      <Header />
+      <TabNavigation activeTab={activeTab} onTabChange={setActiveTab} />
+      
+      {activeTab === 'route' ? (
+        <RouteSearchScreen />
+      ) : (
+        <RouteResultsScreen />
+      )}
+    </SafeAreaView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: '#f5f5f5',
   },
 });
+
+export default App;
