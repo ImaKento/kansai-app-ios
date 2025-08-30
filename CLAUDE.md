@@ -9,15 +9,19 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - **Run on Android**: `npm run android` or `expo start --android`
 - **Run on Web**: `npm run web` or `expo start --web`
 
+**Note**: There are no lint, test, or build commands configured in package.json. The project relies on Expo's built-in TypeScript checking and Metro bundler for development.
+
 ## Project Architecture
 
 This is a React Native mobile application built with Expo that provides route searching functionality for Kansai region bus/train routes. The app is written in TypeScript and targets iOS, Android, and web platforms.
 
 ### Key Dependencies
-- **Expo ~53.0.22**: React Native development framework
-- **React 19.0.0 / React Native 0.79.6**: Core framework with latest architecture
+- **Expo ~53.0.22**: React Native development framework with new architecture enabled
+- **React 19.0.0 / React Native 0.79.5**: Core framework with latest architecture
 - **Zustand 5.0.8**: Lightweight state management library
 - **TypeScript 5.8.3**: Type safety with strict mode enabled
+- **NativeWind 4.1.23**: Tailwind CSS for React Native styling
+- **TailwindCSS 3.4.17**: Utility-first CSS framework
 
 ### Project Structure
 ```
@@ -72,14 +76,33 @@ The app follows a **Clean Architecture** approach with clear separation of conce
 - **Expo TypeScript Base**: Extends Expo's TypeScript configuration
 
 ### Styling & Design
-- React Native StyleSheet with platform-specific adaptations
-- Japanese UI text throughout the application
-- Material Design-inspired color scheme
-- Platform-specific shadows (iOS) and elevation (Android)
-- Responsive flexbox layouts
+- **NativeWind**: Tailwind CSS classes for React Native components
+- **Configuration**: Tailwind config in `tailwind.config.js` with NativeWind preset
+- **Global Styles**: Base Tailwind directives in `global.css`
+- **Metro Integration**: NativeWind Metro plugin configured for CSS processing
+- **Japanese UI**: All interface text in Japanese (出発/到着 for departure/arrival)
+- Platform-specific shadows (iOS) and elevation (Android) via Tailwind classes
+- Responsive flexbox layouts using Tailwind utilities
 
 ### Platform Configuration
 - **iOS**: Full support with iPad compatibility enabled
 - **Android**: Adaptive icon support with edge-to-edge display
 - **Web**: Basic web support with custom favicon
 - **New Architecture**: Expo's new architecture enabled for performance
+
+### Development Workflow
+- **Mock Data**: Route search currently uses mock data with hardcoded results in `use-route-search.view-model.ts:33-80`
+- **State Flow**: Search form → Mock results → Navigate to results screen via global tab state
+- **Navigation**: Simple tab-based navigation using Zustand for global state management
+
+## Build & Styling Configuration
+
+### NativeWind Setup
+- **Babel**: JSX import source configured for NativeWind in `babel.config.js`
+- **Metro**: NativeWind Metro plugin processes `global.css` 
+- **Content Paths**: Tailwind scans `./App.tsx` and `./components/**/*.{js,jsx,ts,tsx}` (needs updating for `src/` structure)
+
+### TypeScript Configuration
+- Extends Expo's base TypeScript config
+- Strict mode enabled for enhanced type safety
+- No additional build or lint scripts configured
