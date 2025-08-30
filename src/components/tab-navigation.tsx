@@ -1,75 +1,46 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-} from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 
 interface TabNavigationProps {
   activeTab: string;
   onTabChange: (tab: string) => void;
 }
 
-const TabNavigation: React.FC<TabNavigationProps> = ({ activeTab, onTabChange }) => {
+const TabNavigation: React.FC<TabNavigationProps> = ({
+  activeTab,
+  onTabChange,
+}) => {
   return (
-    <View style={styles.tabContainer}>
-      <TouchableOpacity 
-        style={[styles.tab, activeTab === 'route' && styles.activeTab]}
+    <View className="flex-row bg-gray border-b border-gray-300">
+      <TouchableOpacity
+        className="flex-1 py-3 items-center relative"
         onPress={() => onTabChange('route')}
       >
-        <Text style={[styles.tabText, activeTab === 'route' && styles.activeTabText]}>
+        <Text
+          className={`text-xl p-1 ${activeTab === 'route' ? 'text-blue-500 font-semibold' : 'text-gray-500 font-normal'}`}
+        >
           ルート検索
         </Text>
-        {activeTab === 'route' && <View style={styles.tabIndicator} />}
+        {activeTab === 'route' && (
+          <View className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-500" />
+        )}
       </TouchableOpacity>
-      
-      <TouchableOpacity 
-        style={[styles.tab, activeTab === 'result' && styles.activeTab]}
+
+      <TouchableOpacity
+        className="flex-1 py-3 items-center relative"
         onPress={() => onTabChange('result')}
       >
-        <Text style={[styles.tabText, activeTab === 'result' && styles.activeTabText]}>
+        <Text
+          className={`text-xl p-1 ${activeTab === 'result' ? 'text-blue-500 font-semibold' : 'text-gray-500 font-normal'}`}
+        >
           検索結果
         </Text>
-        {activeTab === 'result' && <View style={styles.tabIndicator} />}
+        {activeTab === 'result' && (
+          <View className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-500" />
+        )}
       </TouchableOpacity>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  tabContainer: {
-    flexDirection: 'row',
-    backgroundColor: '#fff',
-    borderBottomWidth: 1,
-    borderBottomColor: '#e0e0e0',
-  },
-  tab: {
-    flex: 1,
-    paddingVertical: 12,
-    alignItems: 'center',
-    position: 'relative',
-  },
-  activeTab: {
-    backgroundColor: '#fff',
-  },
-  tabText: {
-    fontSize: 16,
-    color: '#666',
-    fontWeight: '400',
-  },
-  activeTabText: {
-    color: '#4a90e2',
-    fontWeight: '600',
-  },
-  tabIndicator: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    height: 2,
-    backgroundColor: '#4a90e2',
-  },
-});
 
 export default TabNavigation;

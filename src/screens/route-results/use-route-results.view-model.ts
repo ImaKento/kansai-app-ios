@@ -7,25 +7,30 @@ interface RouteResultsState {
   routeResults: RouteData[];
   departure: string;
   arrival: string;
-  
+
   // Actions
-  setRouteResults: (results: RouteData[], departure: string, arrival: string) => void;
+  setRouteResults: (
+    results: RouteData[],
+    departure: string,
+    arrival: string
+  ) => void;
   backToSearch: () => void;
 }
 
-export const useRouteResultsViewModel = create<RouteResultsState>((set) => ({
+export const useRouteResultsViewModel = create<RouteResultsState>(set => ({
   // Initial state
   routeResults: [],
   departure: '',
   arrival: '',
-  
+
   // Actions
-  setRouteResults: (results, departure, arrival) => set({ 
-    routeResults: results,
-    departure,
-    arrival
-  }),
-  
+  setRouteResults: (results, departure, arrival) =>
+    set({
+      routeResults: results,
+      departure,
+      arrival,
+    }),
+
   backToSearch: () => {
     const { setActiveTab } = useAppViewModel.getState();
     setActiveTab('route');
