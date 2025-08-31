@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
-  View,
-  Text,
-  Modal,
-  TouchableOpacity,
-  ScrollView,
   Dimensions,
-  FlatList,
+  Modal,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View
 } from 'react-native';
+import busStops from '../data/bus-stop.json';
 
 interface ScrollableSelectionModalProps {
   visible: boolean;
@@ -33,15 +33,8 @@ const ScrollableSelectionModal: React.FC<ScrollableSelectionModalProps> = ({
     }
   }, [defaultSelected]);
 
-  // たくさんのオプションを用意してスクロールをテスト
-  const options = [
-    { id: 1, label: '関西大学' },
-    { id: 2, label: 'JR高槻駅北' },
-    { id: 3, label: 'JR摂津富田' },
-  ];
-
   const handleSelect = (item: any) => {
-    setSelectedItem(item.label);
+    setSelectedItem(item.name);
     if (onSelect) {
       onSelect(item);
     }
@@ -79,24 +72,24 @@ const ScrollableSelectionModal: React.FC<ScrollableSelectionModalProps> = ({
             showsVerticalScrollIndicator={true}
             bounces={false}
           >
-            {options.map(item => (
+            {busStops.bus_stops.map(item => (
               <TouchableOpacity
                 key={item.id}
                 className={`flex-row justify-between items-center px-4 py-4 border-b border-gray-100 ${
-                  selectedItem === item.label ? 'bg-blue-50' : ''
+                  selectedItem === item.name ? 'bg-blue-50' : ''
                 }`}
                 onPress={() => handleSelect(item)}
               >
                 <Text
                   className={`text-base ${
-                    selectedItem === item.label
+                    selectedItem === item.name
                       ? 'text-blue-600 font-medium'
                       : 'text-gray-800'
                   }`}
                 >
-                  {item.label}
+                  {item.name}
                 </Text>
-                {selectedItem === item.label && (
+                {selectedItem === item.name && (
                   <Text className="text-base text-blue-600 font-bold">✓</Text>
                 )}
               </TouchableOpacity>

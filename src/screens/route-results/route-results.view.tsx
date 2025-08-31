@@ -1,10 +1,17 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
+import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import RouteCard from '../../components/route-card';
+import { useRouteStore } from '../../store/route-store';
 import { useRouteResultsViewModel } from './use-route-results.view-model';
 
 const RouteResultsScreen: React.FC = () => {
-  const { departure, arrival, routeResults, backToSearch } =
+  const { departure, arrival } = useRouteStore();
+
+  const now = new Date();
+  const date = now.toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric' });
+  const hoursMinutes = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
+
+  const { routeResults, backToSearch, goToPreviousTime, goToNextTime, currentTimeIndex, allTimes, searchDateTime } =
     useRouteResultsViewModel();
 
   return (
@@ -15,7 +22,7 @@ const RouteResultsScreen: React.FC = () => {
           <Text className="text-xl text-gray-800">←</Text>
         </TouchableOpacity>
         <View className="mr-2">
-          <Text className="text-base">🚂</Text>
+          <Text className="text-base"></Text>
         </View>
         <Text className="flex-1 text-base text-gray-800 font-medium">
           {departure} → {arrival}
@@ -24,21 +31,58 @@ const RouteResultsScreen: React.FC = () => {
 
       {/* Time Navigation */}
       <View className="bg-white flex-row items-center px-4 py-3 border-b border-gray-300">
-        <TouchableOpacity className="bg-orange-500 px-4 py-2 rounded-2xl">
-          <Text className="text-white text-sm font-medium">1本前</Text>
+        <TouchableOpacity 
+          className={`px-4 py-2 rounded-2xl ${currentTimeIndex > 0 ? 'bg-orange-500' : 'bg-gray-300'}`}
+          onPress={goToPreviousTime}
+          disabled={currentTimeIndex <= 0}
+        >
+          <Text className={`text-sm font-medium ${currentTimeIndex > 0 ? 'text-white' : 'text-gray-500'}`}>
+            1本前
+          </Text>
         </TouchableOpacity>
 
         <View className="flex-1 items-center mx-4">
-          <Text className="text-sm text-gray-500 mb-0.5">
-            2025年7月18日（金）
-          </Text>
-          <Text className="text-base text-gray-800 font-semibold">
-            18:18出発
-          </Text>
+          {searchDateTime ? (
+            <View className="items-center">
+              <Text className="text-sm text-gray-500 mb-0.5">
+                {(() => {
+                  const searchDate = new Date(searchDateTime.date);
+                  const month = searchDate.getMonth() + 1;
+                  const day = searchDate.getDate();
+                  const dayNames = ['日', '月', '火', '水', '木', '金', '土'];
+                  const dayName = dayNames[searchDate.getDay()];
+                  return `${month}月${day}日 (${dayName})`;
+                })()}
+              </Text>
+              <Text className="text-base text-gray-800 font-semibold">
+                {searchDateTime.type === 'departure' ? '出発' : '到着'} {searchDateTime.time}で検索
+              </Text>
+            </View>
+          ) : (
+            <View className="items-center">
+              <Text className="text-sm text-gray-500 mb-0.5">
+                {date}
+              </Text>
+              <Text className="text-base text-gray-800 font-semibold">
+                {hoursMinutes}現在
+              </Text>
+            </View>
+          )}
+          {allTimes.length > 0 && (
+            <Text className="text-xs text-gray-400 mt-0.5">
+              {currentTimeIndex + 1}-{Math.min(currentTimeIndex + 4, allTimes.length)} / {allTimes.length}便
+            </Text>
+          )}
         </View>
 
-        <TouchableOpacity className="bg-orange-500 px-4 py-2 rounded-2xl">
-          <Text className="text-white text-sm font-medium">1本後</Text>
+        <TouchableOpacity 
+          className={`px-4 py-2 rounded-2xl ${currentTimeIndex < Math.max(0, allTimes.length - 4) ? 'bg-orange-500' : 'bg-gray-300'}`}
+          onPress={goToNextTime}
+          disabled={currentTimeIndex >= Math.max(0, allTimes.length - 4)}
+        >
+          <Text className={`text-sm font-medium ${currentTimeIndex < Math.max(0, allTimes.length - 4) ? 'text-white' : 'text-gray-500'}`}>
+            1本後
+          </Text>
         </TouchableOpacity>
       </View>
 

@@ -1,10 +1,10 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { Text, View } from 'react-native';
 
 const Header = () => {
   return (
-    <View className="bg-gray py-4 items-center border-gray-300 ios:shadow-sm android:elevation-2">
-      <Text className="text-3xl text-gray-800">経路検索アプリ</Text>
+    <View className="bg-gray py-1 items-center border-gray-300">
+      <Text className="text-2xl text-gray-800">関大（総情）バス検索アプリ</Text>
     </View>
   );
 };

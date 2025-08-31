@@ -1,0 +1,47 @@
+{
+  "price_list": {
+    "関西大学": {
+      "JR高槻駅北": {
+        "weekdaySchool": 280,
+        "weekdayNoSchool": 280,
+        "weekendNoSchool": 280
+      },
+      "JR富田駅": {
+        "weekdaySchool": 280,
+        "weekdayNoSchool": 280,
+        "weekendNoSchool": 280
+      }
+    },
+    "JR高槻駅北": {
+      "関西大学": {
+        "weekdaySchool": 280,
+        "weekdayNoSchool": 280,
+        "weekendNoSchool": 280
+      },
+      "JR摂津富田": {
+        "weekdaySchool": 280,
+        "weekdayNoSchool": 280,
+        "weekendNoSchool": 280
+      }
+    },
+    "JR富田駅": {
+      "関西大学": {
+        "weekdaySchool": 280,
+        "weekdayNoSchool": 280,
+        "weekendNoSchool": 280
+      }
+    },
+    "JR摂津富田": {
+      "関西大学": {
+        "weekdaySchool": 280,
+        "weekdayNoSchool": 280,
+        "weekendNoSchool": 280
+      },
+      "JR高槻駅北": {
+        "weekdaySchool": 280,
+        "weekdayNoSchool": 280,
+        "weekendNoSchool": 280
+      }
+    }
+  }
+}
