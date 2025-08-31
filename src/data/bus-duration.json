@@ -1,0 +1,37 @@
+{
+  "bus_duration": {
+    "関西大学": {
+      "JR高槻駅北": {
+        "weekdaySchool": 27,
+        "weekdayNoSchool": 27,
+        "weekendNoSchool": 27
+      },
+      "JR富田駅": {
+        "weekdaySchool": 20,
+        "weekdayNoSchool": 20,
+        "weekendNoSchool": 20
+      }
+    },
+    "JR高槻駅北": {
+      "関西大学": {
+        "weekdaySchool": 27,
+        "weekdayNoSchool": 27,
+        "weekendNoSchool": 27
+      }
+    },
+    "JR富田駅": {
+      "関西大学": {
+        "weekdaySchool": 20,
+        "weekdayNoSchool": 20,
+        "weekendNoSchool": 20
+      }
+    },
+    "JR摂津富田": {
+      "関西大学": {
+        "weekdaySchool": 20,
+        "weekdayNoSchool": 20,
+        "weekendNoSchool": 20
+      }
+    }
+  }
+}

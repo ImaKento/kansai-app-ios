@@ -37,9 +37,19 @@ src/
 │   └── route-results/
 │       ├── route-results.view.tsx - Search results display
 │       └── use-route-results.view-model.ts - Results screen logic
+├── data/
+│   ├── bus-duration.json - Travel time data by route and schedule
+│   ├── bus-schedule.ts - Schedule management utilities
+│   ├── bus-stop.json - Bus stop location data
+│   ├── price-list.json - Fare information by route
+│   └── time-schedule.json - Departure times by route
 ├── domain/
-│   ├── entities/ - Domain entities (business objects)
-│   └── value-objects/ - Domain value objects
+│   ├── entities/
+│   │   └── route-result.entity.ts - Route result domain entity
+│   └── value-objects/
+│       └── bus-stop-kind.value-object.ts - Bus stop type definitions
+├── store/
+│   └── route-store.ts - Location selection state management
 ├── types/
 │   └── RouteData.ts - Route data interface definitions
 AppViewModel.ts - Global app state management with Zustand
@@ -48,10 +58,11 @@ AppViewModel.ts - Global app state management with Zustand
 ### Architecture Patterns
 The app follows a **Clean Architecture** approach with clear separation of concerns:
 
-1. **View Layer**: React Native components in `screens/` directories
-2. **ViewModel Layer**: Custom hooks (`use-*.view-model.ts`) handle screen-specific logic
-3. **Domain Layer**: Business entities and value objects in `domain/`
-4. **State Management**: Global state via Zustand (`AppViewModel.ts`), local state via React hooks
+1. **View Layer**: React Native components in `screens/` directories with Japanese UI
+2. **ViewModel Layer**: Custom hooks (`use-*.view-model.ts`) with complex business logic for route calculation
+3. **Data Layer**: JSON-based data sources with dynamic schedule type determination
+4. **Domain Layer**: Business entities and value objects in `domain/` following DDD principles
+5. **State Management**: Multiple Zustand stores for different concerns (navigation, location selection)
 
 ### Component Architecture
 1. **Screens**:
@@ -61,14 +72,17 @@ The app follows a **Clean Architecture** approach with clear separation of conce
 2. **Shared Components**:
    - **Header**: Application header with title
    - **TabNavigation**: Tab switching between route search and results
-   - **RouteCard**: Route information display with time, duration, price, transfers, and color-coded transit line badges
+   - **RouteCard**: Route information display with time, duration, price, and congestion estimates
+   - **ScrollableListModal**: Modal component for location selection with scrollable lists
 
 3. **Main App** (`App.tsx`): Root component handling global navigation state and screen switching
 
 ### State Management
-- **Global State**: Zustand store in `AppViewModel.ts` manages tab navigation state
-- **Screen State**: Individual view-model hooks manage screen-specific state
-- **Component State**: React's useState for local component state
+- **Global State**: 
+  - `AppViewModel.ts`: Tab navigation state using Zustand
+  - `src/store/route-store.ts`: Location selection state (departure/arrival)
+- **Screen State**: Complex business logic in view-model hooks with JSON data integration
+- **Component State**: React's useState for local UI state and modal management
 
 ### Type System
 - **RouteData Interface**: Defines structure for route information including time, duration, price, transfers, and transit lines
@@ -90,17 +104,27 @@ The app follows a **Clean Architecture** approach with clear separation of conce
 - **Web**: Basic web support with custom favicon
 - **New Architecture**: Expo's new architecture enabled for performance
 
-### Development Workflow
-- **Mock Data**: Route search currently uses mock data with hardcoded results in `use-route-search.view-model.ts:33-80`
-- **State Flow**: Search form → Mock results → Navigate to results screen via global tab state
-- **Navigation**: Simple tab-based navigation using Zustand for global state management
+### Data Architecture
+- **JSON Data Sources**: Route information loaded from JSON files in `src/data/`:
+  - `bus-duration.json`: Travel time data by route and schedule type
+  - `price-list.json`: Fare information by route and schedule type  
+  - `time-schedule.json`: Departure times by route and schedule type
+  - `bus-stop.json`: Bus stop location data
+- **Schedule Types**: Dynamic schedule determination based on weekday/weekend and school periods
+- **Real-time Logic**: Smart departure time calculation based on current time
+
+### State Management Architecture
+- **AppViewModel.ts**: Global tab navigation state using Zustand
+- **RouteStore**: Departure/arrival location state in `src/store/route-store.ts`
+- **Screen ViewModels**: Complex business logic in individual view-model hooks
+- **State Flow**: Search form → JSON data lookup → Real-time calculation → Results display
 
 ## Build & Styling Configuration
 
 ### NativeWind Setup
 - **Babel**: JSX import source configured for NativeWind in `babel.config.js`
 - **Metro**: NativeWind Metro plugin processes `global.css` 
-- **Content Paths**: Tailwind scans `./App.tsx` and `./components/**/*.{js,jsx,ts,tsx}` (needs updating for `src/` structure)
+- **Content Paths**: Tailwind correctly configured to scan `./App.tsx`, `./src/**/*.{js,jsx,ts,tsx}`, and `./AppViewModel.ts`
 
 ### TypeScript Configuration
 - Extends Expo's base TypeScript config

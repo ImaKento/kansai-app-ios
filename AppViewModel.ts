@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 
 interface State {
-  activeTab: string;
+  activeTab: string; // 'route' | 'result' | 'timetable'
 }
 
 interface Actions {

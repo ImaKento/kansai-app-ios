@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { Text, View } from 'react-native';
 import { RouteData } from '../types/RouteData';
 
 interface RouteCardProps {
@@ -8,10 +8,26 @@ interface RouteCardProps {
 }
 
 const RouteCard: React.FC<RouteCardProps> = ({ route, index }) => {
+
+  // 混雑度に応じた色を決定
+  const getCongestionStyle = (congestion: string) => {
+    switch (congestion) {
+      case '混雑':
+        return { bg: 'bg-red-100', text: 'text-red-700' };
+      case '少し混雑':
+        return { bg: 'bg-yellow-100', text: 'text-yellow-700' };
+      case '普通':
+        return { bg: 'bg-green-100', text: 'text-green-700' };
+      default:
+        return { bg: 'bg-green-100', text: 'text-green-700' };
+    }
+  };
+  const congestionStyle = getCongestionStyle(route.estimatedCongestion);
+
   return (
-    <View className="bg-white rounded-lg mb-3 ios:shadow-md android:elevation-3">
+    <View className="bg-white border border-gray-300 rounded-lg mb-3">
       <View className="flex-row p-4 items-start">
-        <View className="bg-blue-500 w-6 h-6 rounded-full justify-center items-center mr-3">
+        <View className="bg-blue-500 w-6 h-6 rounded-full justify-center items-center mr-4">
           <Text className="text-white text-sm font-semibold">{route.id}</Text>
         </View>
 
@@ -27,10 +43,12 @@ const RouteCard: React.FC<RouteCardProps> = ({ route, index }) => {
             <Text className="text-base text-blue-500 font-semibold mr-3">
               {route.price}
             </Text>
-            <Text className="text-sm text-gray-500">{route.transfers}</Text>
+            <View className={`${congestionStyle.bg} ml-3 px-2 py-1 rounded`}>
+              <Text className={`text-xs ${congestionStyle.text}`}>混雑予想　{route.estimatedCongestion}</Text>
+            </View>
           </View>
 
-          <View className="flex-row items-center flex-wrap">
+          {/* <View className="flex-row items-center flex-wrap">
             {route.lines.map((line, idx) => (
               <View
                 key={idx}
@@ -45,16 +63,7 @@ const RouteCard: React.FC<RouteCardProps> = ({ route, index }) => {
             {route.route && (
               <Text className="text-sm text-gray-500 ml-1">{route.route}</Text>
             )}
-          </View>
-        </View>
-
-        <View className="flex-row gap-2">
-          <TouchableOpacity className="bg-orange-500 w-9 h-9 rounded-full justify-center items-center">
-            <Text className="text-base">🔖</Text>
-          </TouchableOpacity>
-          <TouchableOpacity className="bg-orange-500 w-9 h-9 rounded-full justify-center items-center">
-            <Text className="text-base">ℹ️</Text>
-          </TouchableOpacity>
+          </View> */}
         </View>
       </View>
     </View>
